@@ -71,5 +71,25 @@ class UsuarioTest : DescribeSpec({
         fotoEnCuzco.cantidadLikes().shouldBe(2)
       }
     }
+
+    describe("un usuario es más amistoso que otro") {
+      val carlos = Usuario()
+      val martin = Usuario()
+      val jonas = Usuario()
+      val matias = Usuario()
+      it("El primero tiene mas amigos, debe dar verdadero") {
+        carlos.agregarAmigo(jonas)
+        carlos.agregarAmigo(matias)
+        martin.agregarAmigo(jonas)
+        carlos.esMasAmistosoQue(martin).shouldBe(true)
+      }
+      it("El primero tiene menos amigos,debe dar falso") {
+        carlos.agregarAmigo(jonas)
+        martin.agregarAmigo(jonas)
+        martin.agregarAmigo(matias)
+        carlos.esMasAmistosoQue(martin).shouldBe(false)
+      }
+    }
+
   }
 })
