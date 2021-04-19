@@ -59,5 +59,17 @@ class UsuarioTest : DescribeSpec({
         juana.espacioDePublicaciones().shouldBe(553038)
       }
     }
+
+    describe("Una publicacion") {
+      it("Dar me gusta 2 veces") {
+        val antonia = Usuario()
+        val elsa = Usuario()
+        fotoEnCuzco.darLike(antonia)
+        fotoEnCuzco.cantidadLikes().shouldBe(1)
+        fotoEnCuzco.darLike(antonia)
+        fotoEnCuzco.darLike(elsa)
+        fotoEnCuzco.cantidadLikes().shouldBe(2)
+      }
+    }
   }
 })
