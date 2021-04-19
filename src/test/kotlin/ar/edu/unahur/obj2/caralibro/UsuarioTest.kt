@@ -8,9 +8,9 @@ class UsuarioTest : DescribeSpec({
     val saludoCumpleanios = Texto("Felicidades Pepito, que los cumplas muy feliz")
     val fotoEnCuzco = Foto(768, 1024)
 
-    val videoSD = Video(10,"720")
-    val video720 = Video(10,"720")
-    val video1080 = Video(10,"1080")
+    val graduacion = Video(120,"SD")
+    val comunion = Video(310,"720")
+    val miBoda = Video(240,"1080")
 
 
     describe("Una publicación") {
@@ -28,28 +28,35 @@ class UsuarioTest : DescribeSpec({
 
       describe("de tipo video" ) {
         it("calidad SD") {
-          videoSD.modificarCalidad("SD")
-          videoSD.espacioQueOcupa().shouldBe(10)
+          graduacion.espacioQueOcupa().shouldBe(120)
         }
         it("calidad HD 720") {
-          video720.espacioQueOcupa().shouldBe(30)
+          comunion.espacioQueOcupa().shouldBe(930)
         }
         it("calidad HD 1080") {
-          video1080.espacioQueOcupa().shouldBe(60)
+          miBoda.espacioQueOcupa().shouldBe(1440)
+        }
+      }
+      describe("modificar calidad") {
+        it("cambiar graduacion de calidad SD a 720") {
+          graduacion.calidad = "720"
+          graduacion.calidad.shouldBe("720")
         }
       }
 
     }
-//ARREGLAR EL TOTAL
+
     describe("Un usuario") {
       it("puede calcular el espacio que ocupan sus publicaciones") {
         val juana = Usuario()
         juana.agregarPublicacion(fotoEnCuzco)
         juana.agregarPublicacion(saludoCumpleanios)
-        juana.agregarPublicacion(videoSD)
-        juana.agregarPublicacion(video720)
-        juana.agregarPublicacion(video1080)
-        juana.espacioDePublicaciones().shouldBe(550648)
+        juana.espacioDePublicaciones().shouldBe(550548)
+        juana.agregarPublicacion(graduacion)
+        juana.agregarPublicacion(comunion)
+        juana.espacioDePublicaciones().shouldBe(551598)
+        juana.agregarPublicacion(miBoda)
+        juana.espacioDePublicaciones().shouldBe(553038)
       }
     }
   }

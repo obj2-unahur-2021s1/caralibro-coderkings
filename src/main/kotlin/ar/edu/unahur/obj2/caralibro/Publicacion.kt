@@ -31,8 +31,4 @@ class Video(val duracion: Int, var calidad: String) :Publicacion() {
       return duracion * 6
     }
   }
-
-  fun modificarCalidad(nuevaCalidad: String) {
-    calidad = nuevaCalidad
-  }
 }
