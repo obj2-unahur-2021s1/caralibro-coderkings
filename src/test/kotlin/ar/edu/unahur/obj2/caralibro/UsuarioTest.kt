@@ -3,6 +3,7 @@ package ar.edu.unahur.obj2.caralibro
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 
 class UsuarioTest : DescribeSpec({
@@ -177,8 +178,28 @@ class UsuarioTest : DescribeSpec({
         testamento.agregarExcluido(jose)
         jose.puedeVer(testamento).shouldBeFalse()
       }
+      it("los mejores amigos de Ramon") {
+        val fotoEnMarDelPlata = Foto(720, 1980)
+        val marely = Usuario()
+        val fredy = Usuario()
+        val analia = Usuario()
+
+        ramon.agregarAmigo(marely)
+        ramon.agregarAmigo(fredy)
+        ramon.agregarAmigo(analia)
+
+        ramon.agregarPublicacion(fotoEnMarDelPlata)
+
+        ramon.agregarNuevoMejorAmigo(fredy)
+        ramon.agregarNuevoMejorAmigo(analia)
+
+
+        ramon.mejoresAmigos.shouldContainExactlyInAnyOrder(fredy, analia)
+
+//      ALTERNATIVA PERO CON ORDEN DE LA LISTA.
+//        ramon.mejoresAmigos.shouldContainExactly(fredy, analia)
+
+      }
     }
-
-
   }
 })
