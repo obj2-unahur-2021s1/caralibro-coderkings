@@ -1,6 +1,8 @@
 package ar.edu.unahur.obj2.caralibro
 
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 
 class UsuarioTest : DescribeSpec({
@@ -24,7 +26,6 @@ class UsuarioTest : DescribeSpec({
           saludoCumpleanios.espacioQueOcupa().shouldBe(45)
         }
       }
-
 
       describe("de tipo video" ) {
         it("calidad SD") {
@@ -81,15 +82,103 @@ class UsuarioTest : DescribeSpec({
         carlos.agregarAmigo(jonas)
         carlos.agregarAmigo(matias)
         martin.agregarAmigo(jonas)
-        carlos.esMasAmistosoQue(martin).shouldBe(true)
+        carlos.esMasAmistosoQue(martin).shouldBeTrue()
       }
       it("El primero tiene menos amigos,debe dar falso") {
         carlos.agregarAmigo(jonas)
         martin.agregarAmigo(jonas)
         martin.agregarAmigo(matias)
-        carlos.esMasAmistosoQue(martin).shouldBe(false)
+        carlos.esMasAmistosoQue(martin).shouldBeFalse()
       }
     }
+
+    describe("tiene Amigo") {
+      val ruben = Usuario()
+      val jeremias = Usuario()
+      ruben.agregarAmigo(jeremias)
+      it("tiene amigo"){
+        ruben.tieneAmigo(jeremias).shouldBeTrue()
+      }
+    }
+
+    describe("propietario") {
+      val carlos = Usuario()
+      val fotoPlaya = Foto(123,462)
+      it("propietario de foto en la playa = ruben"){
+        carlos.agregarPublicacion(fotoPlaya)
+        fotoPlaya.propietario().shouldBe(carlos)
+      }
+    }
+
+    describe("Un usuario puede ver una cierta publicacion") {
+      val ramon = Usuario()
+      val jose = Usuario()
+      val carta = Texto("Hola queridos seguidores espero que se encuentren ok")
+      carta.cambiarPermiso("publico")
+      it("Puede ver su propia publicacion en publica"){
+        ramon.agregarPublicacion(carta)
+        ramon.puedeVer(carta).shouldBeTrue()
+      }
+      it("Puede ver su propia publicacion en solo amigos") {
+        val otraCarta = Texto("Devuelvanme wollok plis")
+        otraCarta.cambiarPermiso("solo amigos")
+        ramon.agregarPublicacion(otraCarta)
+        ramon.puedeVer(otraCarta).shouldBeTrue()
+      }
+      it("Puede ver su propia privado con lista de permitidos") {
+        val otraCarta3 = Texto("Devuelvanme wollok plis")
+        otraCarta3.cambiarPermiso("privado con lista de permitidos")
+        ramon.agregarPublicacion(otraCarta3)
+        ramon.puedeVer(otraCarta3).shouldBeTrue()
+      }
+      it("Puede ver su propia publico con lista de excluidos") {
+        val otraCarta4 = Texto("Devuelvanme wollok plis")
+        otraCarta4.cambiarPermiso("publico con lista de excluidos")
+        ramon.agregarPublicacion(otraCarta4)
+        ramon.puedeVer(otraCarta4).shouldBeTrue()
+      }
+      it("no es amigo") {
+        val cartaAmigo = Texto("Devuelvanme wollok plis")
+        cartaAmigo.cambiarPermiso("solo amigos")
+        ramon.agregarPublicacion(cartaAmigo)
+        jose.puedeVer(cartaAmigo).shouldBeFalse()
+      }
+      it("Es amigo") {
+        val cartaAmigo2 = Texto("Devuelvanme wollok plis")
+        cartaAmigo2.cambiarPermiso("solo amigos")
+        ramon.agregarPublicacion(cartaAmigo2)
+        ramon.agregarAmigo(jose)
+        jose.puedeVer(cartaAmigo2).shouldBeTrue()
+      }
+      it("no esta en lista de permitidos") {
+        val testamento = Texto("blablabla")
+        testamento.cambiarPermiso("privado con lista de permitidos")
+        ramon.agregarPublicacion(testamento)
+        ramon.agregarAmigo(jose)
+        jose.puedeVer(testamento).shouldBeFalse()
+      }
+      it("esta en lista de permitidos") {
+        val testamento = Texto("blablabla")
+        testamento.cambiarPermiso("privado con lista de permitidos")
+        ramon.agregarPublicacion(testamento)
+        testamento.agregarPermitido(jose)
+        jose.puedeVer(testamento).shouldBeTrue()
+      }
+      it("no esta en lista de excluidos") {
+        val testamento = Texto("blablabla")
+        testamento.cambiarPermiso("publico con lista de excluidos")
+        ramon.agregarPublicacion(testamento)
+        jose.puedeVer(testamento).shouldBeTrue()
+      }
+      it("esta en lista de excluidos") {
+        val testamento = Texto("blablabla")
+        testamento.cambiarPermiso("publico con lista de excluidos")
+        ramon.agregarPublicacion(testamento)
+        testamento.agregarExcluido(jose)
+        jose.puedeVer(testamento).shouldBeFalse()
+      }
+    }
+
 
   }
 })

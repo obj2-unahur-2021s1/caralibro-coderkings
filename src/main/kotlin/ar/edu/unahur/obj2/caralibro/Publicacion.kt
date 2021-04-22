@@ -4,6 +4,11 @@ import kotlin.math.ceil
 
 abstract class Publicacion {
   val likes = mutableListOf<Usuario>()
+  val listaPermitidos = mutableListOf<Usuario>()
+  val listaExcluidos = mutableListOf<Usuario>()
+  var propietario = mutableListOf<Usuario>()
+  var permiso: String? = null
+
 
   abstract fun espacioQueOcupa(): Int
   fun darLike(usuario: Usuario) {//Los usuarios que pueden ver una publicación pueden indicar que esa publicación les gusta
@@ -12,6 +17,39 @@ abstract class Publicacion {
     }
   }
   fun cantidadLikes() = likes.size
+  fun agregarPropietario(usuario: Usuario) {
+    propietario.add(usuario)
+  }
+  fun cambiarPermiso(texto:String) {
+    permiso = texto
+  }
+  fun propietario() = propietario.first()
+  fun estaPermitido(usuario: Usuario) :Boolean {
+    if (usuario == this.propietario()) {
+      return true
+    } else if (permiso == "publico con lista de excluidos") {
+      if (!listaExcluidos.contains(usuario)) {
+        return true
+      }
+    } else if (permiso == "privado con lista de permitidos") {
+      if (listaPermitidos.contains(usuario)) {
+        return true
+      }
+    } else if (permiso == "solo amigos") {
+      if (this.propietario().tieneAmigo(usuario)) {
+        return true
+      }
+    }
+    return false
+  }
+
+  fun agregarPermitido(usuario:Usuario) {
+    listaPermitidos.add(usuario)
+  }
+  fun agregarExcluido(usuario: Usuario) {
+    listaExcluidos.add(usuario)
+  }
+
 }
 
 class Foto(val alto: Int, val ancho: Int) : Publicacion() {
