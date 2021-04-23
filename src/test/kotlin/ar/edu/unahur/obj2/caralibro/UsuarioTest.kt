@@ -178,28 +178,53 @@ class UsuarioTest : DescribeSpec({
         testamento.agregarExcluido(jose)
         jose.puedeVer(testamento).shouldBeFalse()
       }
-      it("los mejores amigos de Ramon") {
-        val fotoEnMarDelPlata = Foto(720, 1980)
-        val marely = Usuario()
-        val fredy = Usuario()
-        val analia = Usuario()
-
-        ramon.agregarAmigo(marely)
-        ramon.agregarAmigo(fredy)
-        ramon.agregarAmigo(analia)
-
-        ramon.agregarPublicacion(fotoEnMarDelPlata)
-
-        ramon.agregarNuevoMejorAmigo(fredy)
-        ramon.agregarNuevoMejorAmigo(analia)
-
-
-        ramon.mejoresAmigos.shouldContainExactlyInAnyOrder(fredy, analia)
-
-//      ALTERNATIVA PERO CON ORDEN DE LA LISTA.
-//        ramon.mejoresAmigos.shouldContainExactly(fredy, analia)
-
-      }
     }
+
+    describe("Mejores amigos de un usuario") {
+      val fotoEnMarDelPlata = Foto(720, 1980)
+      val fotoEnParqueChas = Foto(240,720)
+      val videoGraduacion = Video(120,"SD")
+
+      val ramon = Usuario()
+      val marely = Usuario()
+      val fredy = Usuario()
+      val analia = Usuario()
+      val roque = Usuario()
+
+      ramon.agregarAmigo(marely)
+      ramon.agregarAmigo(fredy)
+      ramon.agregarAmigo(analia)
+      ramon.agregarAmigo(roque)
+
+      ramon.agregarPublicacion(fotoEnMarDelPlata)
+      ramon.agregarPublicacion(fotoEnParqueChas)
+      ramon.agregarPublicacion(videoGraduacion)
+
+      fotoEnMarDelPlata.cambiarPermiso("solo amigos")
+      fotoEnParqueChas.cambiarPermiso("privado con lista de permitidos")
+      videoGraduacion.cambiarPermiso("publico con lista de excluidos")
+      fotoEnParqueChas.agregarPermitido(fredy)
+      fotoEnParqueChas.agregarPermitido(analia)
+      videoGraduacion.agregarExcluido(roque)
+
+      it("Puede ver todas las publicaciones") {
+        analia.puedeVer(fotoEnMarDelPlata).shouldBeTrue()
+        analia.puedeVer(fotoEnParqueChas).shouldBeTrue()
+        analia.puedeVer(videoGraduacion).shouldBeTrue()
+        ramon.puedeVerTodasMisPublicaciones(analia).shouldBeTrue()
+        ramon.puedeVerTodasMisPublicaciones(fredy).shouldBeTrue()
+      }
+      it("No puede ver todas las publicaciones") {
+        ramon.puedeVerTodasMisPublicaciones(roque).shouldBeFalse()
+      }
+      it("los mejores amigos de Ramon") {
+        ramon.mejoresAmigos().shouldContainExactlyInAnyOrder(fredy, analia)
+      }
+      //ramon.mejoresAmigos.shouldContainExactlyInAnyOrder(fredy, analia)
+      //ALTERNATIVA PERO CON ORDEN DE LA LISTA.
+      // ramon.mejoresAmigos.shouldContainExactly(fredy, analia)
+    }
+
+
   }
 })

@@ -4,7 +4,6 @@ class Usuario {
   val publicaciones = mutableListOf<Publicacion>()
   val amigos = mutableListOf<Usuario>()
 
-  val mejoresAmigos = mutableListOf<Usuario>()
 
   fun agregarPublicacion(publicacion: Publicacion) {
     publicaciones.add(publicacion)
@@ -19,11 +18,18 @@ class Usuario {
   fun esMasAmistosoQue(usuario: Usuario) = amigos.size > usuario.amigos.size
   fun puedeVer(publicacion: Publicacion) = publicacion.estaPermitido(this)
   fun tieneAmigo(usuario: Usuario) = amigos.contains(usuario)
-
-  fun agregarNuevoMejorAmigo(nuevoMejorAmigo: Usuario) {
-    if (amigos.contains(nuevoMejorAmigo)) {
-      mejoresAmigos.add(nuevoMejorAmigo)
+  fun puedeVerTodasMisPublicaciones(amigo: Usuario): Boolean {
+    var counter = 0
+    for (p in publicaciones) {
+      if (amigo.puedeVer(p)) {
+        counter += 1
+      }
     }
+    if (counter == publicaciones.size) {
+      return true
+    }
+      return false
   }
+  fun mejoresAmigos() = amigos.filter { a -> this.puedeVerTodasMisPublicaciones(a) }
 
 }
