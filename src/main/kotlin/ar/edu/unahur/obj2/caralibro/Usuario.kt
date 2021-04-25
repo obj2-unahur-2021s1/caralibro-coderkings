@@ -32,4 +32,12 @@ class Usuario {
   }
   fun mejoresAmigos() = amigos.filter { a -> this.puedeVerTodasMisPublicaciones(a) }
 
+
+
+  fun likesEnTotal() =
+    publicaciones.sumBy { p -> p.cantidadLikes() }
+
+
+  fun elAmigoMasPopular() = amigos.maxByOrNull { it.likesEnTotal() }
+
 }

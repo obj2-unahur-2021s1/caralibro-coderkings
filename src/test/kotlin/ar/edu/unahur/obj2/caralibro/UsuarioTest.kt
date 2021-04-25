@@ -223,8 +223,57 @@ class UsuarioTest : DescribeSpec({
       //ramon.mejoresAmigos.shouldContainExactlyInAnyOrder(fredy, analia)
       //ALTERNATIVA PERO CON ORDEN DE LA LISTA.
       // ramon.mejoresAmigos.shouldContainExactly(fredy, analia)
+      it ("El amigo mas popular de") {
+        val diego = Usuario()
+        val diana = Usuario()
+        val fede = Usuario()
+        val brayan = Usuario()
+
+        val miPrimerCoche = Foto(1200, 1980)
+        val miEstado = Texto("hoy se estrena mi serie favorita")
+        val unboxingPS5 = Video(480, "720")
+
+        val miPrimeraCasa = Foto(1280, 720)
+        val viajando = Texto("estoy en el avion, viajando a la costa")
+        val abriendoRegalosDeNavidad = Video(240, "720")
+
+        val conciertoEnLunaPark = Foto(1480, 640)
+        val reflexion = Texto("me acabo de dar cuenta que no debo molestar a mis hermanos")
+        val primerDienteDeMiHijo = Video(1280, "SD")
+
+        diego.agregarAmigo(diana)
+        diego.agregarAmigo(fede)
+        diego.agregarAmigo(brayan)
+
+        diana.agregarPublicacion(miPrimerCoche)
+        diana.agregarPublicacion(miEstado)
+        diana.agregarPublicacion(unboxingPS5)
+
+        fede.agregarPublicacion(miPrimeraCasa)
+        fede.agregarPublicacion(viajando)
+        fede.agregarPublicacion(abriendoRegalosDeNavidad)
+
+        brayan.agregarPublicacion(conciertoEnLunaPark)
+        brayan.agregarPublicacion(reflexion)
+        brayan.agregarPublicacion(primerDienteDeMiHijo)
+
+        viajando.darLike(diana)
+        abriendoRegalosDeNavidad.darLike(diana)
+        conciertoEnLunaPark.darLike(diana)
+        reflexion.darLike(diana)
+        primerDienteDeMiHijo.darLike(diana)
+
+        unboxingPS5.darLike(fede)
+        reflexion.darLike(fede)
+        primerDienteDeMiHijo.darLike(fede)
+
+        miPrimerCoche.darLike(brayan)
+        miEstado.darLike(brayan)
+        unboxingPS5.darLike(brayan)
+        viajando.darLike(brayan)
+
+        diego.elAmigoMasPopular().shouldBe(brayan)
+      }
     }
-
-
   }
 })
