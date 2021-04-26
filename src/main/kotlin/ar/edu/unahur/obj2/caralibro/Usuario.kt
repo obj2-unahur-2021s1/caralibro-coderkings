@@ -40,4 +40,19 @@ class Usuario {
 
   fun elAmigoMasPopular() = amigos.maxByOrNull { it.likesEnTotal() }
 
+  fun stalkeaA(usuario: Usuario) = usuario.likesRecibidosDe(this) > usuario.cantidadPublicaciones() * 0.9
+  fun cantidadPublicaciones() = publicaciones.size
+  fun likesRecibidosDe(usuario: Usuario): Int {
+    var likes = 0
+    for (p in publicaciones) {
+      if (p.recibiLikeDe(usuario)) {
+        likes += 1
+      }
+    }
+    return likes
+  }
 }
+
+
+
+

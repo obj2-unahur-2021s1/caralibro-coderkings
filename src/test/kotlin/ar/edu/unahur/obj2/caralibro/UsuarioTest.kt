@@ -120,6 +120,10 @@ class UsuarioTest : DescribeSpec({
         ramon.agregarPublicacion(carta)
         ramon.puedeVer(carta).shouldBeTrue()
       }
+      it("Una publicacion de tipo publica") {
+        ramon.agregarPublicacion(carta)
+        jose.puedeVer(carta).shouldBeTrue()
+      }
       it("Puede ver su propia publicacion en solo amigos") {
         val otraCarta = Texto("Devuelvanme wollok plis")
         otraCarta.cambiarPermiso("solo amigos")
@@ -275,5 +279,79 @@ class UsuarioTest : DescribeSpec({
         diego.elAmigoMasPopular().shouldBe(brayan)
       }
     }
+
+    describe("Un usuario stalkea a otro") {
+      val cristian = Usuario()
+      val ruben = Usuario()//stalker
+
+      val fotoEnMiami = Foto(123,695)
+      val fotoEnGalicia = Foto(596,839)
+      val fotoEnRoma = Foto(350,399)
+      val fotoEnGrecia = Foto(474,344)
+      val fotoEnTurkia = Foto(322,645)
+      val fotoEnJapon = Foto(882,638)
+      val fotoEnColiseo = Foto(2533,1047)
+      val fotoEnEstocolmo = Foto(1933,3773)
+      val fotoEnCataratas = Foto(288,902)
+      val fotoEnGlaciar = Foto(829,1022)
+      val videoEnComicon = Video(1234,"720")
+
+      fotoEnMiami.cambiarPermiso("publico")
+      fotoEnGalicia.cambiarPermiso("publico")
+      fotoEnRoma.cambiarPermiso("publico")
+      fotoEnGrecia.cambiarPermiso("publico")
+      fotoEnTurkia.cambiarPermiso("publico")
+      fotoEnJapon.cambiarPermiso("publico")
+      fotoEnColiseo.cambiarPermiso("publico")
+      fotoEnEstocolmo.cambiarPermiso("publico")
+      fotoEnCataratas.cambiarPermiso("publico")
+      fotoEnGlaciar.cambiarPermiso("publico")
+      videoEnComicon.cambiarPermiso("publico")
+
+      cristian.agregarPublicacion(fotoEnMiami)
+      cristian.agregarPublicacion(fotoEnGalicia)
+      cristian.agregarPublicacion(fotoEnRoma)
+      cristian.agregarPublicacion(fotoEnGrecia)
+      cristian.agregarPublicacion(fotoEnTurkia)
+      cristian.agregarPublicacion(fotoEnJapon)
+      cristian.agregarPublicacion(fotoEnColiseo)
+      cristian.agregarPublicacion(fotoEnEstocolmo)
+      cristian.agregarPublicacion(fotoEnCataratas)
+      cristian.agregarPublicacion(fotoEnGlaciar)
+      cristian.agregarPublicacion(videoEnComicon)
+
+      fotoEnMiami.darLike(ruben)
+      fotoEnGalicia.darLike(ruben)
+      fotoEnRoma.darLike(ruben)
+      fotoEnGrecia.darLike(ruben)
+      fotoEnTurkia.darLike(ruben)
+      fotoEnJapon.darLike(ruben)
+      fotoEnColiseo.darLike(ruben)
+      fotoEnEstocolmo.darLike(ruben)
+      fotoEnCataratas.darLike(ruben)
+
+      it("recibiLikeDe") {
+        fotoEnRoma.recibiLikeDe(ruben).shouldBeTrue()
+      }
+      it("no recibi like de ruben") {
+        videoEnComicon.recibiLikeDe(ruben).shouldBeFalse()
+      }
+      it("cantidad de publicaciones") {
+        cristian.cantidadPublicaciones().shouldBe(11)
+      }
+      it("likesRecibidosDe") {
+        cristian.likesRecibidosDe(ruben).shouldBe(9)
+      }
+      it("Ruben no stalkea a Cristian") {
+        ruben.stalkeaA(cristian).shouldBeFalse()
+      }
+      it("Ruben stalkea a cristian") {//reparar aqui
+        fotoEnGlaciar.darLike(ruben)
+        ruben.stalkeaA(cristian).shouldBeTrue()
+      }
+
+    }
+
+
   }
 })

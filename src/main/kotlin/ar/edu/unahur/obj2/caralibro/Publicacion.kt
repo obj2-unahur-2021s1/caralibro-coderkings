@@ -25,7 +25,7 @@ abstract class Publicacion {
   }
   fun propietario() = propietario.first()
   fun estaPermitido(usuario: Usuario) :Boolean {
-    if (usuario == this.propietario()) {
+    if (usuario == this.propietario() || permiso == "publico") {
       return true
     } else if (permiso == "publico con lista de excluidos") {
       if (!listaExcluidos.contains(usuario)) {
@@ -49,6 +49,7 @@ abstract class Publicacion {
   fun agregarExcluido(usuario: Usuario) {
     listaExcluidos.add(usuario)
   }
+  fun recibiLikeDe(usuario: Usuario) = likes.contains(usuario)
 
 }
 
