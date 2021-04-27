@@ -125,62 +125,62 @@ class UsuarioTest : DescribeSpec({
         jose.puedeVer(carta).shouldBeTrue()
       }
       it("Puede ver su propia publicacion en solo amigos") {
-        val otraCarta = Texto("Devuelvanme wollok plis")
+        val otraCarta = Texto("a la tarde se viene wrestlemania")
         otraCarta.cambiarPermiso("solo amigos")
         ramon.agregarPublicacion(otraCarta)
         ramon.puedeVer(otraCarta).shouldBeTrue()
       }
       it("Puede ver su propia privado con lista de permitidos") {
-        val otraCarta3 = Texto("Devuelvanme wollok plis")
+        val otraCarta3 = Texto("fue bueno el torneo de tenis")
         otraCarta3.cambiarPermiso("privado con lista de permitidos")
         ramon.agregarPublicacion(otraCarta3)
         ramon.puedeVer(otraCarta3).shouldBeTrue()
       }
       it("Puede ver su propia publico con lista de excluidos") {
-        val otraCarta4 = Texto("Devuelvanme wollok plis")
+        val otraCarta4 = Texto("no llegamos al concierto, que pena")
         otraCarta4.cambiarPermiso("publico con lista de excluidos")
         ramon.agregarPublicacion(otraCarta4)
         ramon.puedeVer(otraCarta4).shouldBeTrue()
       }
       it("no es amigo") {
-        val cartaAmigo = Texto("Devuelvanme wollok plis")
+        val cartaAmigo = Texto("preparate para el torneo de la semana que viene")
         cartaAmigo.cambiarPermiso("solo amigos")
         ramon.agregarPublicacion(cartaAmigo)
         jose.puedeVer(cartaAmigo).shouldBeFalse()
       }
       it("Es amigo") {
-        val cartaAmigo2 = Texto("Devuelvanme wollok plis")
+        val cartaAmigo2 = Texto("instalate esa app que esta buena")
         cartaAmigo2.cambiarPermiso("solo amigos")
         ramon.agregarPublicacion(cartaAmigo2)
         ramon.agregarAmigo(jose)
         jose.puedeVer(cartaAmigo2).shouldBeTrue()
       }
       it("no esta en lista de permitidos") {
-        val testamento = Texto("blablabla")
+        val testamento = Texto("dono mi coleccion de mariposas")
         testamento.cambiarPermiso("privado con lista de permitidos")
         ramon.agregarPublicacion(testamento)
         ramon.agregarAmigo(jose)
         jose.puedeVer(testamento).shouldBeFalse()
       }
       it("esta en lista de permitidos") {
-        val testamento = Texto("blablabla")
-        testamento.cambiarPermiso("privado con lista de permitidos")
-        ramon.agregarPublicacion(testamento)
-        testamento.agregarPermitido(jose)
-        jose.puedeVer(testamento).shouldBeTrue()
+        val testamento2 = Texto("dono mi coche")
+        testamento2.cambiarPermiso("privado con lista de permitidos")
+        ramon.agregarPublicacion(testamento2)
+        testamento2.agregarPermitido(jose)
+        jose.puedeVer(testamento2).shouldBeTrue()
       }
       it("no esta en lista de excluidos") {
-        val testamento = Texto("blablabla")
-        testamento.cambiarPermiso("publico con lista de excluidos")
-        ramon.agregarPublicacion(testamento)
-        jose.puedeVer(testamento).shouldBeTrue()
+        val testamento3 = Texto("dono mi set de pelucas")
+        testamento3.cambiarPermiso("publico con lista de excluidos")
+        ramon.agregarPublicacion(testamento3)
+        jose.puedeVer(testamento3).shouldBeTrue()
       }
       it("esta en lista de excluidos") {
-        val testamento = Texto("blablabla")
-        testamento.cambiarPermiso("publico con lista de excluidos")
-        ramon.agregarPublicacion(testamento)
-        testamento.agregarExcluido(jose)
-        jose.puedeVer(testamento).shouldBeFalse()
+        val testamento4 = Texto("dono mi casa de vacaciones")
+        testamento4.cambiarPermiso("publico con lista de excluidos")
+        ramon.agregarPublicacion(testamento4)
+        testamento4.agregarExcluido(jose)
+        jose.puedeVer(testamento4).shouldBeFalse()
       }
     }
 
@@ -345,13 +345,10 @@ class UsuarioTest : DescribeSpec({
       it("Ruben no stalkea a Cristian") {
         ruben.stalkeaA(cristian).shouldBeFalse()
       }
-      it("Ruben stalkea a cristian") {//reparar aqui
+      it("Ruben stalkea a cristian") {
         fotoEnGlaciar.darLike(ruben)
         ruben.stalkeaA(cristian).shouldBeTrue()
       }
-
     }
-
-
   }
 })

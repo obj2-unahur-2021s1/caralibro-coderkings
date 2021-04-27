@@ -14,7 +14,7 @@ class Usuario {
   fun agregarAmigo(amigo: Usuario) {
     amigos.add(amigo)
   }
-  fun amigos() = amigos
+
   fun esMasAmistosoQue(usuario: Usuario) = amigos.size > usuario.amigos.size
   fun puedeVer(publicacion: Publicacion) = publicacion.estaPermitido(this)
   fun tieneAmigo(usuario: Usuario) = amigos.contains(usuario)
@@ -40,7 +40,7 @@ class Usuario {
 
   fun elAmigoMasPopular() = amigos.maxByOrNull { it.likesEnTotal() }
 
-  fun stalkeaA(usuario: Usuario) = usuario.likesRecibidosDe(this) > usuario.cantidadPublicaciones() * 0.9
+  fun stalkeaA(usuario: Usuario) = usuario.likesRecibidosDe(this) >= usuario.cantidadPublicaciones() * 0.9
   fun cantidadPublicaciones() = publicaciones.size
   fun likesRecibidosDe(usuario: Usuario): Int {
     var likes = 0
@@ -51,6 +51,11 @@ class Usuario {
     }
     return likes
   }
+// otro modo de stalkeo alternativo by Cesar
+
+//fun cantidadDeMeGustasA(usuario: Usuario) = usuario.publicaciones.filter { p -> p.recibiLikeDe(this) }.size
+
+//fun stalkeaA(usuario: Usuario) = this.cantidadDeMeGustasA(usuario)  >= usuario.publicaciones.size * 0.9
 }
 
 
